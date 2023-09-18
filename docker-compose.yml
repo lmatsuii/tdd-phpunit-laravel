@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  tdd-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: lmatsui/tdd-app
+    container_name: tdd-app
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - tdd-network
+
+  tdd-database:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    container_name: tdd-database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tdd
+      MYSQL_USER: tdd
+      MYSQL_PASSWORD: tdd
+    volumes:
+      - tdd-db-volumes:/var/lib/mysql
+    networks:
+      - tdd-network
+
+volumes:
+  tdd-db-volumes:
+
+networks:
+  tdd-network:
+    external: false
